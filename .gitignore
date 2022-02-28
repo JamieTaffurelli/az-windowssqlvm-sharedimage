@@ -1,0 +1,6 @@
+test-results.xml
+code-coverage.xml
+**/prototypes/**/*
+**/*.tfstate*
+**/*.terraform*
+**/out.txt
