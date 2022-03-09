@@ -1,6 +1,13 @@
 test-results.xml
 code-coverage.xml
-**/prototypes/**/*
-**/*.tfstate*
+**/*.tfstate
+**/*.tfstate.*
 **/*.terraform*
-**/out.txt
+crash.log
+*.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
