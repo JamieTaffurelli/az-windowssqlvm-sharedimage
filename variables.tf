@@ -29,6 +29,12 @@ variable "os_disk_size_gb" {
   description = "Size in GB of OS disk"
 }
 
+variable "timezone" {
+  type        = string
+  default     = "GMT Standard Time"
+  description = "timezone to use for OS"
+}
+
 variable "subnet_name" {
   type        = string
   description = "Name of the subnet to deploy the VM to"

@@ -26,8 +26,8 @@ data "azurerm_shared_image" "images" {
 }
 
 data "azurerm_storage_account" "diag" {
-  name                = var.storage_account_name
-  gallery_name        = var.storage_account_resource_group_name
+  name         = var.storage_account_name
+  gallery_name = var.storage_account_resource_group_name
 }
 
 data "azurerm_key_vault" "encryption_kv" {
@@ -163,9 +163,11 @@ resource "azurerm_windows_virtual_machine" "vm" {
   network_interface_ids = [
     azurerm_network_interface.vm.id
   ]
-  zone            = var.zone
-  source_image_id = data.azurerm_shared_image.images.id
-
+  zone                       = var.zone
+  source_image_id            = data.azurerm_shared_image.images.id
+  allow_extension_operations = true
+  enable_automatic_updates   = false
+  timezone                   = var.timezone
   identity {
     type = "SystemAssigned"
   }
