@@ -26,8 +26,8 @@ data "azurerm_shared_image" "images" {
 }
 
 data "azurerm_storage_account" "diag" {
-  name         = var.storage_account_name
-  gallery_name = var.storage_account_resource_group_name
+  name                = var.storage_account_name
+  resource_group_name = var.storage_account_resource_group_name
 }
 
 data "azurerm_key_vault" "encryption_kv" {
@@ -44,7 +44,7 @@ resource "azurerm_public_ip" "vm" {
   sku                     = "Standard"
   allocation_method       = "Static"
   sku_tier                = "Regional"
-  availability_zone       = "Zone-Redundant"
+  zones                   = [1, 2, 3]
   ip_version              = "IPv4"
   idle_timeout_in_minutes = 4
   tags                    = var.tags
@@ -197,7 +197,7 @@ resource "azurerm_managed_disk" "logdisk" {
   storage_account_type = "Premium_LRS"
   create_option        = "Empty"
   disk_size_gb         = var.sql_log_disk_size_gb
-  zones                = [var.zone]
+  zone                 = var.zone
   tags                 = var.tags
 }
 
@@ -215,7 +215,7 @@ resource "azurerm_managed_disk" "datadisk" {
   storage_account_type = "Premium_LRS"
   create_option        = "Empty"
   disk_size_gb         = var.sql_data_disk_size_gb
-  zones                = [var.zone]
+  zone                 = var.zone
   tags                 = var.tags
 }
 
@@ -331,7 +331,7 @@ resource "azurerm_virtual_machine_extension" "nwa" {
 resource "azurerm_resource_group_template_deployment" "data_collection" {
   name                = "data-collection-${var.virtual_machine_name}"
   resource_group_name = var.resource_group_name
-  template_content    = file("az-windowssqlvm-sharedimage.tf\\arm\\vmDataCollectionRuleAssociation.json")
+  template_content    = file("arm\\vmDataCollectionRuleAssociation.json")
   parameters_content = jsonencode({
     "vmName" = {
       value = azurerm_windows_virtual_machine.vm.name
