@@ -331,7 +331,7 @@ resource "azurerm_virtual_machine_extension" "nwa" {
 resource "azurerm_resource_group_template_deployment" "data_collection" {
   name                = "data-collection-${var.virtual_machine_name}"
   resource_group_name = var.resource_group_name
-  template_content    = file("arm\\vmDataCollectionRuleAssociation.json")
+  template_content    = file("arm/vmDataCollectionRuleAssociation.json")
   parameters_content = jsonencode({
     "vmName" = {
       value = azurerm_windows_virtual_machine.vm.name
