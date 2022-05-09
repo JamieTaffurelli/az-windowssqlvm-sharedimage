@@ -1,0 +1,26 @@
+on: 
+  push:
+    branches:
+      - main
+
+concurrency: ci-${{ github.ref }}
+
+jobs:
+  validate:
+    environment: deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Version Modules
+      uses: paulhatch/semantic-version@v4
+      with:
+        tag_prefix: v
+        major_pattern: (MAJOR)
+        minor_pattern: (MINOR)
+        format: ${major}.${minor}.${patch}
+        bump_each_commit: false
+        change_path: az-resourcegroup.tf outputs.tf providers.tf variables.tf
