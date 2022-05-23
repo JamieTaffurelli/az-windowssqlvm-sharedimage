@@ -24,7 +24,7 @@ output "virtual_machine_id" {
 }
 
 output "virtual_machine_identity_object_id" {
-  value       = azurerm_windows_virtual_machine.vm.identity.principal_id
+  value       = azurerm_windows_virtual_machine.vm.identity[0].principal_id
   description = "Object ID of assigned identity"
 }
 
