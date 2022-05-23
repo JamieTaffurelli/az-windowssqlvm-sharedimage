@@ -22,5 +22,11 @@
         "dataCollectionRuleId": "[parameters('dataCollectionRuleId')]"
       }
     }
-  ]
+  ],
+  "outputs": {
+    "resourceID": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/providers/dataCollectionRuleAssociations', concat(parameters('vmName'),'/Microsoft.Insights/', parameters('associationName')))).id]"
+    }
+  }
 }
