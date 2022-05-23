@@ -14,7 +14,7 @@ output "network_interface_id" {
 }
 
 output "network_interface_ip" {
-  value       = azurerm_network_interface.vm.ip_address
+  value       = azurerm_network_interface.vm.private_ip_address
   description = "IP address of the Network Interface"
 }
 
