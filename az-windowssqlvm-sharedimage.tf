@@ -134,7 +134,7 @@ resource "random_password" "admin_password" {
   length           = 16
   special          = true
   lower            = true
-  number           = true
+  numeric          = true
   min_numeric      = 1
   min_special      = 1
   min_upper        = 1
@@ -373,6 +373,8 @@ resource "azurerm_virtual_machine_extension" "bg" {
 resource "random_password" "sql_admin_password" {
   length           = 16
   special          = true
+  lower            = true
+  numeric          = true
   min_numeric      = 1
   min_special      = 1
   min_upper        = 1
