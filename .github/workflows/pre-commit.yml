@@ -1,0 +1,69 @@
+on: pull_request
+
+concurrency: ci-${{ github.ref }}
+
+env:
+  ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+jobs:
+  pre-commit:
+    environment: deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.2.3
+        terraform_wrapper: false
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.18
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Set up Tflint
+      uses: lablabs/setup-tflint@v2
+
+    - name: install packages
+      run: |
+        curl -L "$(curl -s https://api.github.com/repos/tenable/terrascan/releases/latest | grep -o -E https://.+?_Linux_x86_64.tar.gz)" > terrascan.tar.gz
+        tar -xf terrascan.tar.gz terrascan && rm terrascan.tar.gz
+        install terrascan /usr/local/bin && rm terrascan
+        go install github.com/aquasecurity/tfsec/cmd/tfsec@latest
+
+    - name: Run pre-commit
+      uses: pre-commit/action@v3.0.0
+      with:
+        extra_args: -v --all-files
+
+    - name: Go Format
+      uses: Jerome1337/gofmt-action@v1.0.4
+      with:
+        gofmt-path: './'
+        gofmt-flags: '-l -d'
+
+    - name: Setup Go Unit Test Dependencies
+      working-directory: test/unit/
+      run:  go get -v -t -d && go mod tidy
+
+    - name: Lint Unit Tests
+      uses: golangci/golangci-lint-action@v3
+      with:
+        version: latest
+        working-directory: test/unit/
+
+    - name: Terratest Unit Tests
+      working-directory: test/unit/
+      run: go test -v

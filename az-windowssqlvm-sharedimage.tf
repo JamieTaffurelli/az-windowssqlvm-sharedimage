@@ -142,9 +142,11 @@ resource "random_password" "admin_password" {
 }
 
 resource "azurerm_key_vault_secret" "admin_password" {
-  name         = var.virtual_machine_name
-  value        = random_password.admin_password.result
-  key_vault_id = data.azurerm_key_vault.password_kv.id
+  name            = var.virtual_machine_name
+  value           = random_password.admin_password.result
+  key_vault_id    = data.azurerm_key_vault.password_kv.id
+  content_type    = "password"
+  expiration_date = timeadd(timestamp(), "8760h")
 
   lifecycle {
     ignore_changes = [
@@ -378,9 +380,11 @@ resource "random_password" "sql_admin_password" {
 }
 
 resource "azurerm_key_vault_secret" "sql_admin_password" {
-  name         = "${var.virtual_machine_name}-sql"
-  value        = random_password.sql_admin_password.result
-  key_vault_id = data.azurerm_key_vault.password_kv.id
+  name            = "${var.virtual_machine_name}-sql"
+  value           = random_password.sql_admin_password.result
+  key_vault_id    = data.azurerm_key_vault.password_kv.id
+  content_type    = "password"
+  expiration_date = timeadd(timestamp(), "8760h")
 
   lifecycle {
     ignore_changes = [
