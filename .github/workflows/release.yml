@@ -23,4 +23,4 @@ jobs:
         minor_pattern: (MINOR)
         format: ${major}.${minor}.${patch}
         bump_each_commit: false
-        change_path: az-resourcegroup.tf outputs.tf providers.tf variables.tf data.tf
+        change_path: az-windowssqlvm-sharedimage.tf outputs.tf providers.tf variables.tf data.tf arm
