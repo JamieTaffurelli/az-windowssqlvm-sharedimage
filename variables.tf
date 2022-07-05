@@ -151,11 +151,6 @@ variable "sql_data_disk_lun" {
   description = "Lun of the data disk"
 }
 
-variable "shared_image_gallery_resource_group_name" {
-  type        = string
-  description = "Resource Group name of the shared image gallery to take the image from"
-}
-
 variable "log_analytics_workspace_name" {
   type        = string
   description = "Name of Log Analytics Workspace to send diagnostics"
@@ -164,6 +159,16 @@ variable "log_analytics_workspace_name" {
 variable "log_analytics_workspace_resource_group_name" {
   type        = string
   description = "Resource Group of Log Analytics Workspace to send diagnostics"
+}
+
+variable "data_collection_rule_name" {
+  type        = string
+  description = "Name of data collection rule to send diagnostics"
+}
+
+variable "data_collection_rule_resource_group_name" {
+  type        = string
+  description = "Resource Group of data collection rule to send diagnostics"
 }
 
 variable "tags" {
